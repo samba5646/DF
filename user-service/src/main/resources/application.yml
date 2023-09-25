@@ -1,0 +1,40 @@
+server:
+  port: 7070
+
+# Email settings
+spring:
+  mail:
+    from: parthiban.geetham@gmail.com
+    host: smtp.gmail.com
+    port: 587
+    username: pavan.geethamsoft@gmail.com
+    password: xsuoyrzohftlenvv
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+          auth: true
+          starttls:
+            enable: true
+      debug: true
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/checking # MongoDB connection URI
+      auto-index-creation: true # Enable auto-index creation (fine for development/testing)
+
+# Spring Security settings
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 798293914312-5hface554905eiu3oaf65kbp7s634jjp.apps.googleusercontent.com
+            clientSecret: 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
+          facebook:
+            clientId: 994889461778763
+            clientSecret: b05de22766c0368721a71bfb52329d00
+
+
+
+
