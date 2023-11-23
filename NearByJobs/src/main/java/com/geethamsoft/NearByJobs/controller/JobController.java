@@ -4,7 +4,6 @@ package com.geethamsoft.NearByJobs.controller;
 
 import com.geethamsoft.NearByJobs.dto.JobDTO;
 import com.geethamsoft.NearByJobs.dto.JobSearchDTO;
-import com.geethamsoft.NearByJobs.exception.ResourceNotFoundException;
 import com.geethamsoft.NearByJobs.model.Job;
 import com.geethamsoft.NearByJobs.service.JobService;
 import jakarta.validation.Valid;
@@ -54,7 +53,7 @@ public class JobController {
                .orElseGet(()-> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
-    @DeleteMapping("/job/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWork(@PathVariable String id) {
         jobService.deleteJob(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
