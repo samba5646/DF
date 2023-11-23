@@ -4,8 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-import java.lang.annotation.ElementType;
-
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class NearByProfessionalsApplication {
 

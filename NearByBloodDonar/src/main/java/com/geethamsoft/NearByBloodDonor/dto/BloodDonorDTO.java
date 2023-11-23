@@ -1,5 +1,6 @@
 package com.geethamsoft.NearByBloodDonor.dto;
 
+import com.geethamsoft.NearByBloodDonor.validations.Age;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class BloodDonorDTO {
     private Date lastDonationDate;
 
     @NotNull(message = "Age is required")
-    @Min(value = 18, message = "Age must be at least 18")
+    @Age(minimum = 18L, maximum = 50L, message = "Age should be between 18 and 50")
     private Integer age;
 
     @NotBlank(message = "Gender is required")
