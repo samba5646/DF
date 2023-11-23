@@ -1,10 +1,12 @@
 server:
   port: 7070
-
+logging:
+  level:
+    org.springframework.security: TRACE
 # Email settings
 spring:
   mail:
-    from: parthiban.geetham@gmail.com
+    from: pavan.geethamsoft@gmail.com
     host: smtp.gmail.com
     port: 587
     username: pavan.geethamsoft@gmail.com
@@ -18,12 +20,14 @@ spring:
             enable: true
       debug: true
 
+  # MongoDB settings (if you're using MongoDB)
   data:
     mongodb:
       uri: mongodb://localhost:27017/checking # MongoDB connection URI
       auto-index-creation: true # Enable auto-index creation (fine for development/testing)
 
-# Spring Security settings
+
+  # Spring Security settings
   security:
     oauth2:
       client:
@@ -31,10 +35,15 @@ spring:
           google:
             clientId: 798293914312-5hface554905eiu3oaf65kbp7s634jjp.apps.googleusercontent.com
             clientSecret: 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
+            scope:
+              - openid
+              - profile
+              - email
+            redirectUriTemplate: "{baseUrl}/login/oauth2/code/{registrationId}"
           facebook:
             clientId: 994889461778763
             clientSecret: b05de22766c0368721a71bfb52329d00
-
-
-
-
+            scope:
+              - email
+              - public_profile
+            redirectUriTemplate: "{baseUrl}/login/oauth2/code/{registrationId}"

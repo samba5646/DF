@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class BloodDonorSearchDTO {
+
     private String bloodType;
     private String location;
     private String availability;
@@ -22,5 +23,6 @@ public class BloodDonorSearchDTO {
     private Double costRangeMax;
     private List<String> languagesSpoken;
     private String preferredContactMethod;
+
 }
 

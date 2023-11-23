@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BloodDonorService {
+public class
+BloodDonorService {
     @Autowired
     private BloodDonorRepository bloodDonorRepository;
 
@@ -137,6 +138,4 @@ public class BloodDonorService {
         bloodDonor.setContactInformation(bloodDonorDTO.getContactInformation());
         return bloodDonor;
     }
-
 }
-

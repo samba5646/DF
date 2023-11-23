@@ -6,10 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class BloodDonorDTO {
     @NotBlank(message = "Name is required")
     private String name;
@@ -47,4 +48,28 @@ public class BloodDonorDTO {
 
     @NotBlank(message = "Contact Information is required")
     private String contactInformation;
+    private Double costRangeMin;
+
+    private Double costRangeMax;
+
+    @NotNull(message = "Minimum Age is required")
+    @Min(value = 18, message = "Minimum Age must be at least 18")
+    private Integer minAge;
+
+    @NotNull(message = "Maximum Age is required")
+    @Min(value = 18, message = "Maximum Age must be at least 18")
+    private Integer maxAge;
+
+    private List<String> languagesSpoken;
+
+    private String preferredContactMethod;
+
+    private String websiteUrl;
+
+    private String socialMediaLinks;
+
+    private String bloodDonationCenterName;
+
+    private String additionalNotes;
+
 }

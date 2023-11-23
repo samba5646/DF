@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +26,10 @@ public class UserService {
     private EmailService emailService;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    @Value("${email.from}")
+    @Value("${spring.mail.from}")
+
     private String fromEmail;
 
     @Transactional
@@ -162,6 +163,7 @@ public class UserService {
             throw new InvalidRequestException("Invalid login data.");
         }
     }
+
 
     private void validatePasswordChangeDTO(PasswordChangeDTO changeDTO) {
         if (changeDTO == null || changeDTO.getNewPassword() == null ||

@@ -81,5 +81,6 @@ public class BloodDonor {
     private String bloodDonationCenterName;
 
     private String additionalNotes;
+
 }
 

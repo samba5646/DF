@@ -1,6 +1,5 @@
 package com.geethamsoft.NearByBloodDonor.controller;
 
-
 import com.geethamsoft.NearByBloodDonor.dto.BloodDonorDTO;
 import com.geethamsoft.NearByBloodDonor.dto.BloodDonorSearchDTO;
 import com.geethamsoft.NearByBloodDonor.exception.ResourceNotFoundException;
@@ -40,14 +39,14 @@ public class BloodDonorController {
         return new ResponseEntity<>(bloodDonor, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<BloodDonor> updateBloodDonor(@PathVariable String id, @Valid @RequestBody BloodDonorDTO bloodDonorDTO) throws ResourceNotFoundException {
         BloodDonor updatedBloodDonor = bloodDonorService.updateBloodDonor(id, bloodDonorDTO);
         return ResponseEntity.ok(updatedBloodDonor);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBloodDonor(@PathVariable String id) throws ResourceNotFoundException {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<BloodDonor> deleteBloodDonor(@PathVariable String id) throws ResourceNotFoundException {
         bloodDonorService.deleteBloodDonor(id);
         return ResponseEntity.noContent().build();
     }
