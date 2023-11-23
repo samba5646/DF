@@ -53,7 +53,7 @@ public class BloodDonorController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BloodDonor>> searchBloodDonors(BloodDonorSearchDTO searchDTO) {
+    public ResponseEntity<List<BloodDonor>> searchBloodDonors(@RequestBody BloodDonorSearchDTO searchDTO) {
         List<BloodDonor> bloodDonors = bloodDonorService.searchBloodDonors(searchDTO);
         return ResponseEntity.ok(bloodDonors);
     }
@@ -67,7 +67,7 @@ public class BloodDonorController {
     }
 
     @GetMapping("/search/paged")
-    public ResponseEntity<Page<BloodDonor>> searchBloodDonorsPaged(BloodDonorSearchDTO searchDTO,
+    public ResponseEntity<Page<BloodDonor>> searchBloodDonorsPaged(@RequestBody BloodDonorSearchDTO searchDTO,
                                                                    @RequestParam(name = "page", defaultValue = "0") int page,
                                                                    @RequestParam(name = "size", defaultValue = "10") int size,
                                                                    @RequestParam(name = "sortBy", defaultValue = "name") String sortBy) {
