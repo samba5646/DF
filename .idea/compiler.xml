@@ -7,13 +7,33 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="NearByJobs" />
+        <module name="NearByRentalService" />
+        <module name="NearByTechniciansAndNonTechnicians" />
+        <module name="NearByShopsAdsAndOffers" />
         <module name="NearByProfessionals" />
+        <module name="NearByBusinessOpportunity" />
+        <module name="user-service" />
+        <module name="NearByBloodDonar" />
+        <module name="NearByCabsAndVehicleBooking" />
+        <module name="NearByBuyAndSellProducts" />
+        <module name="socialworker" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="NearByBloodDonar" options="-parameters" />
+      <module name="NearByBusinessOpportunity" options="-parameters" />
+      <module name="NearByBuyAndSellProducts" options="-parameters" />
+      <module name="NearByCabsAndVehicleBooking" options="-parameters" />
+      <module name="NearByJobs" options="-parameters" />
       <module name="NearByProfessionals" options="-parameters" />
+      <module name="NearByRentalService" options="-parameters" />
+      <module name="NearByShopsAdsAndOffers" options="-parameters" />
+      <module name="NearByTechniciansAndNonTechnicians" options="-parameters" />
+      <module name="socialworker" options="-parameters" />
+      <module name="user-service" options="-parameters" />
     </option>
   </component>
 </project>
