@@ -5,6 +5,17 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/NearByProfessionals/pom.xml" />
+        <option value="$USER_HOME$/Downloads/Socialworker/Socialworker/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByBloodDonar/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByBusinessOpportunity/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByBuyAndSellProducts/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByCabsAndVehicleBooking/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByJobs/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByRentalService/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByShopsAdsAndOffers/pom.xml" />
+        <option value="$PROJECT_DIR$/NearByTechniciansAndNonTechnicians/pom.xml" />
+        <option value="$PROJECT_DIR$/Socialworker/pom.xml" />
+        <option value="$PROJECT_DIR$/user-service/pom.xml" />
       </list>
     </option>
   </component>
