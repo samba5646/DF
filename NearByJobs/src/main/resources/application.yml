@@ -4,5 +4,4 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/checking
-      auto-index-creation: true
 

@@ -20,14 +20,14 @@ spring:
             enable: true
       debug: true
 
-  # MongoDB settings (if you're using MongoDB)
+# MongoDB settings (if you're using MongoDB)
   data:
     mongodb:
       uri: mongodb://localhost:27017/checking # MongoDB connection URI
       auto-index-creation: true # Enable auto-index creation (fine for development/testing)
 
 
-  # Spring Security settings
+# Spring Security settings
   security:
     oauth2:
       client:

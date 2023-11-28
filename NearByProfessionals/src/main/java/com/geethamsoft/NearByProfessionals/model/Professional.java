@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 
 
 @Document(collection = "professionals")
@@ -24,10 +22,9 @@ public class Professional {
 
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email is required")
-    @Indexed(unique = true )
     private String email;
 
-    @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}", message = "Invalid mobile number format (e.g., 123-456-7890)")
+    @Pattern(regexp = "^\\d{10}$", message = "Invalid mobile number format (e.g., 1234567890)")
     private String mobileNumber;
 
     @NotBlank(message = "Location is required")
