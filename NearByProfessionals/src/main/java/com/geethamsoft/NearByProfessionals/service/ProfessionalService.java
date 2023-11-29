@@ -2,7 +2,7 @@ package com.geethamsoft.NearByProfessionals.service;
 
 import com.geethamsoft.NearByProfessionals.DTO.ProfessionalDTO;
 import com.geethamsoft.NearByProfessionals.DTO.ProfessionalSearchDTO;
-import com.geethamsoft.NearByProfessionals.exception.ResourceNotFoundException;
+import com.geethamsoft.NearByProfessionals.exception.ProfessionalNotFoundException;
 import com.geethamsoft.NearByProfessionals.model.Professional;
 import com.geethamsoft.NearByProfessionals.repository.ProfessionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProfessionalService {
@@ -99,27 +100,45 @@ public class ProfessionalService {
     }
 
     public Professional registerProfessional(ProfessionalDTO professionalDTO) {
-        Professional professional = new Professional();
-        mapProfessionalDTOToProfessional(professionalDTO, professional);
-        return professionalRepository.save(professional);
+        Professional professional = mapProfessionalDTOToProfessional(professionalDTO);
+        return professionalRepository.save(professional);}
+
+
+
+    public Optional<Professional> updateProfessional(String id, ProfessionalDTO professionalDTO) {
+        Optional<Professional> existingProfessional = professionalRepository.findById(id);
+        if (existingProfessional.isPresent()) {
+            Professional updatedProfessional =mapProfessionalDTOToProfessional(professionalDTO);
+            updatedProfessional.setFullName(professionalDTO.getFullName());
+            updatedProfessional.setEmail(professionalDTO.getEmail());
+            updatedProfessional.setMobileNumber(professionalDTO.getMobileNumber());
+            updatedProfessional.setLocation(professionalDTO.getLocation());
+            updatedProfessional.setType(professionalDTO.getType());
+            updatedProfessional.setJobTitleOrSpecialization(professionalDTO.getJobTitleOrSpecialization());
+            updatedProfessional.setExperience(professionalDTO.getExperience());
+            updatedProfessional.setSkills(professionalDTO.getSkills());
+            updatedProfessional.setLanguagesSpoken(professionalDTO.getLanguagesSpoken());
+            updatedProfessional.setBriefBio(professionalDTO.getBriefBio());
+            updatedProfessional.setEducation(professionalDTO.getEducation());
+            updatedProfessional.setAvailability(professionalDTO.getAvailability());
+            updatedProfessional.setPreferredContactMethod(professionalDTO.getPreferredContactMethod());
+            updatedProfessional.setMinPrice(professionalDTO.getMinPrice());
+            updatedProfessional.setMaxPrice(professionalDTO.getMaxPrice());
+            return Optional.of(professionalRepository.save(updatedProfessional));
+        }
+        throw new ProfessionalNotFoundException("Professional not found with id: " + id);
     }
 
-    public Professional updateProfessional(String id, ProfessionalDTO professionalDTO) throws ResourceNotFoundException {
-        Professional existingProfessional = professionalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Professional not found with id: " + id));
 
-        mapProfessionalDTOToProfessional(professionalDTO, existingProfessional);
-        return professionalRepository.save(existingProfessional);
-    }
-
-    public void deleteProfessional(String id) throws ResourceNotFoundException {
+    public void deleteProfessional(String id) throws ProfessionalNotFoundException {
         Professional existingProfessional = professionalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Professional not found with id: " + id));
+                .orElseThrow(() -> new ProfessionalNotFoundException("Professional not found with id: " + id));
 
         professionalRepository.delete(existingProfessional);
     }
 
-    private void mapProfessionalDTOToProfessional(ProfessionalDTO professionalDTO, Professional professional) {
+    private Professional mapProfessionalDTOToProfessional(ProfessionalDTO professionalDTO) {
+        Professional professional =new Professional();
         professional.setFullName(professionalDTO.getFullName());
         professional.setEmail(professionalDTO.getEmail());
         professional.setMobileNumber(professionalDTO.getMobileNumber());
@@ -135,6 +154,7 @@ public class ProfessionalService {
         professional.setPreferredContactMethod(professionalDTO.getPreferredContactMethod());
         professional.setMinPrice(professionalDTO.getMinPrice());
         professional.setMaxPrice(professionalDTO.getMaxPrice());
+        return professional;
     }
 
 

@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class JobService {
+public class
+JobService {
     @Autowired
     private JobRepository jobRepository;
 
@@ -30,7 +31,6 @@ public class JobService {
             throw new JobNotFoundException("Job not found with id: " + id);
         }
         return jobRepository.findById(id);
-
     }
 
     public Job addJob(JobDTO jobDTO) {
