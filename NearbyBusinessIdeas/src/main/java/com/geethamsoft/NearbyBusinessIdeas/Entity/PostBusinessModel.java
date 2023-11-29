@@ -1,0 +1,32 @@
+package com.geethamsoft.NearbyBusinessIdeas.Entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "PostBusiness")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
+public class PostBusinessModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NotBlank(message = "Title cannot be blank")
+    private String title;
+    @NotBlank(message = "Category cannot be blank")
+    private String category;
+    @Size(max = 255, message = "Format cannot exceed 255 characters")
+    private String format;
+    @NotBlank(message = "Content cannot be blank")
+    private String content;
+    @Positive(message = "Price must be a positive value")
+    private Long price;
+    private Long contactInformation;
+
+
+}

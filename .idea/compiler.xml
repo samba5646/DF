@@ -10,16 +10,21 @@
         <module name="NearByJobs" />
         <module name="NearByRentalService" />
         <module name="NearByTechniciansAndNonTechnicians" />
+        <module name="NearbyBusinessIdeas" />
         <module name="NearByShopsAdsAndOffers" />
         <module name="NearByProfessionals" />
+        <module name="Socialworker" />
         <module name="NearByBusinessOpportunity" />
         <module name="user-service" />
         <module name="NearByBloodDonar" />
         <module name="NearByCabsAndVehicleBooking" />
         <module name="NearByBuyAndSellProducts" />
-        <module name="socialworker" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="PostBusinessIdea" target="17" />
+      <module name="socialworker" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -32,6 +37,9 @@
       <module name="NearByRentalService" options="-parameters" />
       <module name="NearByShopsAdsAndOffers" options="-parameters" />
       <module name="NearByTechniciansAndNonTechnicians" options="-parameters" />
+      <module name="NearbyBusinessIdeas" options="-parameters" />
+      <module name="PostBusinessIdea" options="-parameters" />
+      <module name="Socialworker" options="-parameters" />
       <module name="socialworker" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
