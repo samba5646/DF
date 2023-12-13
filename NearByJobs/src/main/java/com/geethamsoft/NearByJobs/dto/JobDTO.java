@@ -2,8 +2,10 @@ package com.geethamsoft.NearByJobs.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.List;
@@ -11,7 +13,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class JobDTO {
+    @Id
+    private String id;
+
     @NotBlank(message = "Job title is required")
     private String jobTitle;
 
@@ -28,8 +34,8 @@ public class JobDTO {
     private String experienceLevel;
 
     @NotNull(message = "Salary is required")
-    @DecimalMin(value = "0.0", message = "Salary must be a non-negative number")
-    private double salary;
+    @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be a non-negative number")
+    private Double salary;
 
     @NotBlank(message = "Description is required")
     private String description;
@@ -67,9 +73,11 @@ public class JobDTO {
 
     private boolean remoteWork;
 
-    @FutureOrPresent(message = "Apply deadline must be in the future")
+    @Future(message = "Apply deadline must be in the future")
     private Date applyDeadline;
 
     private String languageRequirements;
-}
 
+    private String createdAtFormatted;
+    private String updatedAtFormatted;
+}

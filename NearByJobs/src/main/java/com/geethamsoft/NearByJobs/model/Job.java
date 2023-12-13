@@ -3,19 +3,26 @@ package com.geethamsoft.NearByJobs.model;
 import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+
 
 @Document(collection = "jobs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Job {
+
     @Id
     private String id;
 
@@ -82,5 +89,9 @@ public class Job {
 
     private String languageRequirements;
 
-}
+    @CreatedDate
+    private LocalDateTime createdAt;
 
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+}

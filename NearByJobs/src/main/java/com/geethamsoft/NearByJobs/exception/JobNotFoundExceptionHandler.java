@@ -19,7 +19,6 @@ public class JobNotFoundExceptionHandler {
                 (jobNotFoundException.getMessage(),
                         jobNotFoundException.getCause(),
                         HttpStatus.NOT_FOUND
-
                 );
         return new ResponseEntity<>(jobException,HttpStatus.NOT_FOUND);
     }
@@ -31,4 +30,3 @@ public class JobNotFoundExceptionHandler {
         }).toList();
         return ResponseEntity.ok(errors);    }
 }
-

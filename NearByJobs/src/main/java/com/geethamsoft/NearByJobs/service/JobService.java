@@ -1,184 +1,177 @@
 package com.geethamsoft.NearByJobs.service;
 
 import com.geethamsoft.NearByJobs.dto.JobDTO;
-import com.geethamsoft.NearByJobs.dto.JobSearchDTO;
 import com.geethamsoft.NearByJobs.exception.JobNotFoundException;
 import com.geethamsoft.NearByJobs.model.Job;
+import com.geethamsoft.NearByJobs.model.TimeIdentify;
 import com.geethamsoft.NearByJobs.repository.JobRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class
-JobService {
-    @Autowired
-    private JobRepository jobRepository;
+@RequiredArgsConstructor
+public class JobService {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final JobRepository jobRepository;
+    private final TimeIdentify timeIdentify;
 
-    public List<Job> getAllJobs() {
-        return jobRepository.findAll();
+    public List<JobDTO> getAllJobs() {
+        List<Job> jobs = jobRepository.findAll();
+        return jobs.stream()
+                .map(this::buildJobDTO)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Job> getJobById(String id) {
-        if(jobRepository.findById(id).isEmpty()){
+    public JobDTO getJobById(String id) {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new JobNotFoundException("Job not found with id: " + id));
+        return buildJobDTO(job);
+    }
+
+    public JobDTO addJob(JobDTO jobDTO) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        Job job = Job.builder()
+                .jobTitle(jobDTO.getJobTitle())
+                .category(jobDTO.getCategory())
+                .location(jobDTO.getLocation())
+                .jobType(jobDTO.getJobType())
+                .experienceLevel(jobDTO.getExperienceLevel())
+                .salary(jobDTO.getSalary())
+                .description(jobDTO.getDescription())
+                .requirements(jobDTO.getRequirements())
+                .companyName(jobDTO.getCompanyName())
+                .companyIndustry(jobDTO.getCompanyIndustry())
+                .companySize(jobDTO.getCompanySize())
+                .skills(jobDTO.getSkills())
+                .educationLevel(jobDTO.getEducationLevel())
+                .jobTags(jobDTO.getJobTags())
+                .benefits(jobDTO.getBenefits())
+                .employmentStatus(jobDTO.getEmploymentStatus())
+                .applicationType(jobDTO.getApplicationType())
+                .jobPostingStartDate(jobDTO.getJobPostingStartDate())
+                .jobPostingEndDate(jobDTO.getJobPostingEndDate())
+                .remoteWork(jobDTO.isRemoteWork())
+                .applyDeadline(jobDTO.getApplyDeadline())
+                .languageRequirements(jobDTO.getLanguageRequirements())
+                .createdAt(currentDateTime)
+                .updatedAt(currentDateTime)
+                .build();
+
+        Job savedJob = jobRepository.save(job);
+
+        return JobDTO.builder()
+                .jobTitle(savedJob.getJobTitle())
+                .category(savedJob.getCategory())
+                .location(savedJob.getLocation())
+                .jobType(savedJob.getJobType())
+                .experienceLevel(savedJob.getExperienceLevel())
+                .salary(savedJob.getSalary())
+                .description(savedJob.getDescription())
+                .requirements(savedJob.getRequirements())
+                .companyName(savedJob.getCompanyName())
+                .companyIndustry(savedJob.getCompanyIndustry())
+                .companySize(savedJob.getCompanySize())
+                .skills(savedJob.getSkills())
+                .educationLevel(savedJob.getEducationLevel())
+                .jobTags(savedJob.getJobTags())
+                .benefits(savedJob.getBenefits())
+                .employmentStatus(savedJob.getEmploymentStatus())
+                .applicationType(savedJob.getApplicationType())
+                .jobPostingStartDate(savedJob.getJobPostingStartDate())
+                .jobPostingEndDate(savedJob.getJobPostingEndDate())
+                .remoteWork(savedJob.isRemoteWork())
+                .applyDeadline(savedJob.getApplyDeadline())
+                .languageRequirements(savedJob.getLanguageRequirements())
+                .createdAtFormatted(timeIdentify.formatTimeAgo(savedJob.getCreatedAt()))
+                .updatedAtFormatted(timeIdentify.formatTimeAgo(savedJob.getUpdatedAt()))
+                .build();
+    }
+
+    public JobDTO updateJob(String id, JobDTO jobDTO) {
+        Job existingJob = jobRepository.findById(id)
+                .orElseThrow(() -> new JobNotFoundException("Job not found with id: " + id));
+
+        BeanUtils.copyProperties(jobDTO, existingJob, "id", "createdAt", "updatedAt");
+
+        Job updatedJob = jobRepository.save(existingJob);
+
+        return JobDTO.builder()
+                .jobTitle(updatedJob.getJobTitle())
+                .category(updatedJob.getCategory())
+                .location(updatedJob.getLocation())
+                .jobType(updatedJob.getJobType())
+                .experienceLevel(updatedJob.getExperienceLevel())
+                .salary(updatedJob.getSalary())
+                .description(updatedJob.getDescription())
+                .requirements(updatedJob.getRequirements())
+                .companyName(updatedJob.getCompanyName())
+                .companyIndustry(updatedJob.getCompanyIndustry())
+                .companySize(updatedJob.getCompanySize())
+                .skills(updatedJob.getSkills())
+                .educationLevel(updatedJob.getEducationLevel())
+                .jobTags(updatedJob.getJobTags())
+                .benefits(updatedJob.getBenefits())
+                .employmentStatus(updatedJob.getEmploymentStatus())
+                .applicationType(updatedJob.getApplicationType())
+                .jobPostingStartDate(updatedJob.getJobPostingStartDate())
+                .jobPostingEndDate(updatedJob.getJobPostingEndDate())
+                .remoteWork(updatedJob.isRemoteWork())
+                .applyDeadline(updatedJob.getApplyDeadline())
+                .languageRequirements(updatedJob.getLanguageRequirements())
+                .createdAtFormatted(timeIdentify.formatTimeAgo(updatedJob.getCreatedAt()))
+                .updatedAtFormatted(timeIdentify.formatTimeAgo(updatedJob.getUpdatedAt()))
+                .build();
+    }
+
+    public String deleteJob(String id) {
+        if (jobRepository.existsById(id)) {
+            jobRepository.deleteById(id);
+            return "Job deleted successfully.";
+        } else {
             throw new JobNotFoundException("Job not found with id: " + id);
         }
-        return jobRepository.findById(id);
     }
 
-    public Job addJob(JobDTO jobDTO) {
-        Job job = mapJobDTO(jobDTO);
-        return jobRepository.save(job);
-    }
-    public Optional<Job> updateJob(String id, JobDTO jobDTO)  {
-       Optional <Job> existingJob = jobRepository.findById(id);
+    private JobDTO buildJobDTO(Job job) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        String createdAtFormatted = job.getCreatedAt() != null ?
+                timeIdentify.formatTimeAgo(job.getCreatedAt()) : timeIdentify.formatTimeAgo(currentDateTime);
 
-        if(existingJob.isPresent()){
-            Job updatedJob = mapJobDTO(jobDTO);
-
-            updatedJob.setJobTitle(jobDTO.getJobTitle());
-            updatedJob.setCategory(jobDTO.getCategory());
-            updatedJob.setLocation(jobDTO.getLocation());
-            updatedJob.setJobType(jobDTO.getJobType());
-            updatedJob.setExperienceLevel(jobDTO.getExperienceLevel());
-            updatedJob.setSalary(jobDTO.getSalary());
-            updatedJob.setDescription(jobDTO.getDescription());
-            updatedJob.setRequirements(jobDTO.getRequirements());
-            updatedJob.setCompanyName(jobDTO.getCompanyName());
-            updatedJob.setCompanyIndustry(jobDTO.getCompanyIndustry());
-            updatedJob.setCompanySize(jobDTO.getCompanySize());
-            updatedJob.setSkills(jobDTO.getSkills());
-            updatedJob.setEducationLevel(jobDTO.getEducationLevel());
-            updatedJob.setJobTags(jobDTO.getJobTags());
-            updatedJob.setBenefits(jobDTO.getBenefits());
-            updatedJob.setEmploymentStatus(jobDTO.getEmploymentStatus());
-            updatedJob.setApplicationType(jobDTO.getApplicationType());
-            updatedJob.setJobPostingStartDate(jobDTO.getJobPostingStartDate());
-            updatedJob.setJobPostingEndDate(jobDTO.getJobPostingEndDate());
-            updatedJob.setRemoteWork(jobDTO.isRemoteWork());
-            updatedJob.setApplyDeadline(jobDTO.getApplyDeadline());
-
-            return Optional.of(jobRepository.save(updatedJob));
-
-        }
-       throw new JobNotFoundException("Job not found with id: " + id);
-
-    }
-
-public void deleteJob(String id) {
-    Optional<Job>existingWork = jobRepository.findById(id);
-    if (existingWork.isPresent()){
-        jobRepository.deleteById(id);
-    }else{
-        throw new JobNotFoundException("details are not available in Database");
+        String updatedAtFormatted = job.getUpdatedAt() != null ?
+                timeIdentify.formatTimeAgo(job.getUpdatedAt()) : timeIdentify.formatTimeAgo(currentDateTime);
+        return JobDTO.builder()
+                .id(job.getId())
+                .jobTitle(job.getJobTitle())
+                .category(job.getCategory())
+                .location(job.getLocation())
+                .jobType(job.getJobType())
+                .experienceLevel(job.getExperienceLevel())
+                .salary(job.getSalary())
+                .description(job.getDescription())
+                .requirements(job.getRequirements())
+                .companyName(job.getCompanyName())
+                .companyIndustry(job.getCompanyIndustry())
+                .companySize(job.getCompanySize())
+                .skills(job.getSkills())
+                .educationLevel(job.getEducationLevel())
+                .jobTags(job.getJobTags())
+                .benefits(job.getBenefits())
+                .employmentStatus(job.getEmploymentStatus())
+                .applicationType(job.getApplicationType())
+                .jobPostingStartDate(job.getJobPostingStartDate())
+                .jobPostingEndDate(job.getJobPostingEndDate())
+                .remoteWork(job.isRemoteWork())
+                .applyDeadline(job.getApplyDeadline())
+                .languageRequirements(job.getLanguageRequirements())
+                .createdAtFormatted(createdAtFormatted)
+                .updatedAtFormatted(updatedAtFormatted)
+                .build();
     }
 }
-
-    public List<Job> searchJobs(JobSearchDTO searchDTO) {
-        Query query = buildSearchQuery(searchDTO);
-        return mongoTemplate.find(query, Job.class);
-    }
-
-    private Query buildSearchQuery(JobSearchDTO searchDTO) {
-        Query query = new Query();
-
-        if (searchDTO.getKeyword() != null && !searchDTO.getKeyword().isEmpty()) {
-            Criteria keywordCriteria = new Criteria().orOperator(
-                    Criteria.where("jobTitle").regex(searchDTO.getKeyword(), "i"),
-                    Criteria.where("category").regex(searchDTO.getKeyword(), "i"),
-                    Criteria.where("location").regex(searchDTO.getKeyword(), "i"),
-                    Criteria.where("description").regex(searchDTO.getKeyword(), "i"),
-                    Criteria.where("companyName").regex(searchDTO.getKeyword(), "i")
-            );
-            query.addCriteria(keywordCriteria);
-        }
-
-        if (searchDTO.getCategory() != null && !searchDTO.getCategory().isEmpty()) {
-            query.addCriteria(Criteria.where("category").is(searchDTO.getCategory()));
-        }
-
-        if (searchDTO.getLocation() != null && !searchDTO.getLocation().isEmpty()) {
-            query.addCriteria(Criteria.where("location").is(searchDTO.getLocation()));
-        }
-
-        if (searchDTO.getJobType() != null && !searchDTO.getJobType().isEmpty()) {
-            query.addCriteria(Criteria.where("jobType").is(searchDTO.getJobType()));
-        }
-
-        if (searchDTO.getExperienceLevel() != null && !searchDTO.getExperienceLevel().isEmpty()) {
-            query.addCriteria(Criteria.where("experienceLevel").is(searchDTO.getExperienceLevel()));
-        }
-
-        if (searchDTO.getMinSalary() != null) {
-            query.addCriteria(Criteria.where("salary").gte(searchDTO.getMinSalary()));
-        }
-
-        if (searchDTO.getMaxSalary() != null) {
-            query.addCriteria(Criteria.where("salary").lte(searchDTO.getMaxSalary()));
-        }
-
-        if (searchDTO.getJobPostingStartDate() != null) {
-            query.addCriteria(Criteria.where("jobPostingStartDate").gte(searchDTO.getJobPostingStartDate()));
-        }
-
-        if (searchDTO.getJobPostingEndDate() != null) {
-            query.addCriteria(Criteria.where("jobPostingEndDate").lte(searchDTO.getJobPostingEndDate()));
-        }
-
-        if (searchDTO.isRemoteWork()) {
-            query.addCriteria(Criteria.where("remoteWork").is(true));
-        }
-
-        if (searchDTO.getApplyDeadline() != null) {
-            query.addCriteria(Criteria.where("applyDeadline").gte(searchDTO.getApplyDeadline()));
-        }
-
-        if (searchDTO.getLanguageRequirements() != null && !searchDTO.getLanguageRequirements().isEmpty()) {
-            query.addCriteria(Criteria.where("languageRequirements").is(searchDTO.getLanguageRequirements()));
-        }
-
-        // Add more criteria for the remaining fields as needed
-
-        return query;
-    }
-
-
-
-
-
-
-    private Job mapJobDTO(JobDTO jobDTO) {
-        Job job = new Job();
-        job.setJobTitle(jobDTO.getJobTitle());
-        job.setCategory(jobDTO.getCategory());
-        job.setLocation(jobDTO.getLocation());
-        job.setJobType(jobDTO.getJobType());
-        job.setExperienceLevel(jobDTO.getExperienceLevel());
-        job.setSalary(jobDTO.getSalary());
-        job.setDescription(jobDTO.getDescription());
-        job.setRequirements(jobDTO.getRequirements());
-        job.setCompanyName(jobDTO.getCompanyName());
-        job.setCompanyIndustry(jobDTO.getCompanyIndustry());
-        job.setCompanySize(jobDTO.getCompanySize());
-        job.setSkills(jobDTO.getSkills());
-        job.setEducationLevel(jobDTO.getEducationLevel());
-        job.setJobTags(jobDTO.getJobTags());
-        job.setBenefits(jobDTO.getBenefits());
-        job.setEmploymentStatus(jobDTO.getEmploymentStatus());
-        job.setApplicationType(jobDTO.getApplicationType());
-        job.setJobPostingStartDate(jobDTO.getJobPostingStartDate());
-        job.setJobPostingEndDate(jobDTO.getJobPostingEndDate());
-        job.setRemoteWork(jobDTO.isRemoteWork());
-        job.setApplyDeadline(jobDTO.getApplyDeadline());
-        job.setLanguageRequirements(jobDTO.getLanguageRequirements());
-        return job;
-    }
-}
-
