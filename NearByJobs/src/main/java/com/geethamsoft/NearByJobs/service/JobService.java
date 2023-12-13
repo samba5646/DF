@@ -147,6 +147,7 @@ public class JobService {
         String updatedAtFormatted = job.getUpdatedAt() != null ?
                 TimeIdentify.formatTimeAgo(job.getUpdatedAt()) : TimeIdentify.formatTimeAgo(currentDateTime);
         return JobDTO.builder()
+                .id(job.getId())
                 .jobTitle(job.getJobTitle())
                 .category(job.getCategory())
                 .location(job.getLocation())
