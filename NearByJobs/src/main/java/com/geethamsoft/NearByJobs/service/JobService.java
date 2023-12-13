@@ -7,7 +7,6 @@ import com.geethamsoft.NearByJobs.model.TimeIdentify;
 import com.geethamsoft.NearByJobs.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 public class JobService {
 
     private final JobRepository jobRepository;
-    private final TimeIdentify timeIdentify;
 
     public List<JobDTO> getAllJobs() {
         List<Job> jobs = jobRepository.findAll();
@@ -67,6 +65,7 @@ public class JobService {
         Job savedJob = jobRepository.save(job);
 
         return JobDTO.builder()
+                .id(savedJob.getId())
                 .jobTitle(savedJob.getJobTitle())
                 .category(savedJob.getCategory())
                 .location(savedJob.getLocation())
@@ -89,8 +88,8 @@ public class JobService {
                 .remoteWork(savedJob.isRemoteWork())
                 .applyDeadline(savedJob.getApplyDeadline())
                 .languageRequirements(savedJob.getLanguageRequirements())
-                .createdAtFormatted(timeIdentify.formatTimeAgo(savedJob.getCreatedAt()))
-                .updatedAtFormatted(timeIdentify.formatTimeAgo(savedJob.getUpdatedAt()))
+                .createdAtFormatted(TimeIdentify.formatTimeAgo(savedJob.getCreatedAt()))
+                .updatedAtFormatted(TimeIdentify.formatTimeAgo(savedJob.getUpdatedAt()))
                 .build();
     }
 
@@ -103,6 +102,7 @@ public class JobService {
         Job updatedJob = jobRepository.save(existingJob);
 
         return JobDTO.builder()
+                .id(updatedJob.getId())
                 .jobTitle(updatedJob.getJobTitle())
                 .category(updatedJob.getCategory())
                 .location(updatedJob.getLocation())
@@ -125,8 +125,8 @@ public class JobService {
                 .remoteWork(updatedJob.isRemoteWork())
                 .applyDeadline(updatedJob.getApplyDeadline())
                 .languageRequirements(updatedJob.getLanguageRequirements())
-                .createdAtFormatted(timeIdentify.formatTimeAgo(updatedJob.getCreatedAt()))
-                .updatedAtFormatted(timeIdentify.formatTimeAgo(updatedJob.getUpdatedAt()))
+                .createdAtFormatted(TimeIdentify.formatTimeAgo(updatedJob.getCreatedAt()))
+                .updatedAtFormatted(TimeIdentify.formatTimeAgo(updatedJob.getUpdatedAt()))
                 .build();
     }
 
@@ -142,12 +142,11 @@ public class JobService {
     private JobDTO buildJobDTO(Job job) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String createdAtFormatted = job.getCreatedAt() != null ?
-                timeIdentify.formatTimeAgo(job.getCreatedAt()) : timeIdentify.formatTimeAgo(currentDateTime);
+                TimeIdentify.formatTimeAgo(job.getCreatedAt()) : TimeIdentify.formatTimeAgo(currentDateTime);
 
         String updatedAtFormatted = job.getUpdatedAt() != null ?
-                timeIdentify.formatTimeAgo(job.getUpdatedAt()) : timeIdentify.formatTimeAgo(currentDateTime);
+                TimeIdentify.formatTimeAgo(job.getUpdatedAt()) : TimeIdentify.formatTimeAgo(currentDateTime);
         return JobDTO.builder()
-                .id(job.getId())
                 .jobTitle(job.getJobTitle())
                 .category(job.getCategory())
                 .location(job.getLocation())
